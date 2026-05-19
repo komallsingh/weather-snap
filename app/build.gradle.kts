@@ -28,14 +28,17 @@ android {
 
     buildTypes {
 
-        release {
+        debug {
+            buildConfigField("boolean", "ENABLE_LOGGING", "true")
+        }
 
+        release {
             isMinifyEnabled = false
 
+            buildConfigField("boolean", "ENABLE_LOGGING", "false")
+
             proguardFiles(
-                getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
-                ),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
@@ -53,8 +56,8 @@ android {
     }
 
     buildFeatures {
-
         compose = true
+        buildConfig=true
     }
 }
 
