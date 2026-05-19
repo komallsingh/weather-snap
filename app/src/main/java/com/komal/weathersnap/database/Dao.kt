@@ -10,7 +10,6 @@ interface WeatherDao {
 
     @Insert
     suspend fun insert(report: WeatherReportEntity): Long
-
-    @Query("SELECT * FROM weather_reports ORDER BY savedAt DESC")
+    @Query("SELECT * FROM WeatherReportEntity ORDER BY timestamp DESC")
     fun getAllReports(): Flow<List<WeatherReportEntity>>
 }
