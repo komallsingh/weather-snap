@@ -6,7 +6,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface WeatherReportDao {
+interface WeatherDao {
 
     @Insert
     suspend fun insert(report: WeatherReportEntity): Long

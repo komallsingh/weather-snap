@@ -2,21 +2,17 @@ package com.komal.weathersnap.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-@Entity(tableName = "weather_reports")
+@Entity
 data class WeatherReportEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val cityName: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val city: String,
     val temperature: Double,
-    val condition: String,
     val humidity: Int,
-    val windSpeed: Double,
+    val wind: Double,
     val pressure: Double,
-    val latitude: Double,
-    val longitude: Double,
-    val imagePath: String?,
-    val originalImageSize: Long,
-    val compressedImageSize: Long,
     val notes: String,
-    val savedAt: Long = System.currentTimeMillis()
+    val imagePath: String,
+    val originalSize: Long,
+    val compressedSize: Long,
+    val timestamp: Long
 )
