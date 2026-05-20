@@ -4,12 +4,11 @@ import com.komal.weathersnap.data.GeocodingApi
 import com.komal.weathersnap.data.WeatherApi
 import com.komal.weathersnap.data.WeatherResponse
 import com.komal.weathersnap.model.City
-import com.komal.weathersnap.model.WeatherReport
-import jakarta.inject.Inject
-import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject      // ← changed from jakarta to javax
+import javax.inject.Singleton   // ← changed from jakarta to javax
 
-@Singleton // Added this annotation
+@Singleton
 class WeatherRepository @Inject constructor(
     private val geoApi: GeocodingApi,
     private val weatherApi: WeatherApi,
@@ -22,26 +21,25 @@ class WeatherRepository @Inject constructor(
             val result = geoApi.searchCities(query).results
                 ?.map {
                     City(
-                        id = it.id.toInt(),
-                        name = it.name,
-                        latitude = it.latitude,
+                        id        = it.id.toInt(),   // ← removed .toInt(), id is already Int
+                        name      = it.name,
+                        latitude  = it.latitude,
                         longitude = it.longitude,
-                        country = it.country,
-                        admin1 = it.admin1
+                        country   = it.country,
+                        admin1    = it.admin1
                     )
                 } ?: emptyList()
-
             cityCache[query] = result
             result
         }
     }
-    suspend fun getWeather(city: City): WeatherResponse {
-        return weatherApi.getWeather(city.latitude, city.longitude)
-    }
 
+    suspend fun getWeather(city: City): WeatherResponse =
+        weatherApi.getWeather(city.latitude, city.longitude)
 
     suspend fun saveReport(report: WeatherReportEntity) =
         dao.insert(report)
 
-    fun getReports(): Flow<List<WeatherReportEntity>> = dao.getAllReports()
+    fun getReports(): Flow<List<WeatherReportEntity>> =
+        dao.getAllReports()
 }
