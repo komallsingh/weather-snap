@@ -62,59 +62,29 @@ android {
 }
 
 dependencies {
-
     // Core
     implementation(libs.androidx.core.ktx)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
     implementation(libs.androidx.activity.compose)
-
-
-
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-
     implementation(libs.androidx.compose.ui)
-
     implementation(libs.androidx.compose.ui.graphics)
-
     implementation(libs.androidx.compose.ui.tooling.preview)
-
     implementation(libs.androidx.compose.material3)
-
     debugImplementation(libs.androidx.compose.ui.tooling)
-
-
-
     // Navigation
     implementation(libs.androidx.navigation.compose)
-
-
-
     // Lifecycle Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
     implementation(libs.androidx.lifecycle.runtime.compose)
-
-
-
     // Room
     implementation(libs.androidx.room.runtime)
-
     implementation(libs.androidx.room.ktx)
-
     ksp(libs.androidx.room.compiler)
-
-
-
     // Retrofit
     implementation(libs.retrofit)
-
     implementation(libs.retrofit.gson)
-
-
-
     // OkHttp
     implementation(libs.okhttp.logging)
 
@@ -122,19 +92,12 @@ dependencies {
 
     // CameraX
     implementation(libs.camerax.core)
-
     implementation(libs.camerax.camera2)
-
     implementation(libs.camerax.lifecycle)
-
     implementation(libs.camerax.view)
-
-
 
     // Coroutines
     implementation(libs.coroutines.android)
-
-
 
     // Hilt
     implementation(libs.hilt.android)

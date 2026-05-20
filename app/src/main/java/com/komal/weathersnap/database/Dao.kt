@@ -12,4 +12,7 @@ interface WeatherDao {
     suspend fun insert(report: WeatherReportEntity): Long
     @Query("SELECT * FROM WeatherReportEntity ORDER BY timestamp DESC")
     fun getAllReports(): Flow<List<WeatherReportEntity>>
+
+    @Query("DELETE FROM reports WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

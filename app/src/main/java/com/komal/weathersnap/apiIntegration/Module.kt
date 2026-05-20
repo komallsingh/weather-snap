@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jakarta.inject.Named
+import jakarta.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,10 +26,19 @@ object NetworkModule {
             })
             .build()
 
-    @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
+    @Provides @Singleton
+    @Named("weather")
+    fun provideWeatherRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.open-meteo.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+
+    @Provides @Singleton @Named("geo")
+    fun provideGeoRetrofit(client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://geocoding-api.open-meteo.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
