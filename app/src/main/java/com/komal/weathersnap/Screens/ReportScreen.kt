@@ -33,7 +33,7 @@ import java.io.File
 @Composable
 fun ReportScreen(
     navController: NavController,
-    sharedVm: SharedViewModel = hiltViewModel(),
+    sharedVm: SharedViewModel,
     reportVm: ReportViewModel = hiltViewModel()
 ) {
     val draft by sharedVm.draft.collectAsState()

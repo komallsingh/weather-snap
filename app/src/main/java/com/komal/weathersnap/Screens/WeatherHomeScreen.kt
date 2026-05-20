@@ -34,7 +34,7 @@ import com.komal.weathersnap.navigation.Screen
 fun WeatherHomeScreen(
     navController: NavController,
     weatherVm: WeatherViewModel = hiltViewModel(),
-    sharedVm: SharedViewModel = hiltViewModel()
+    sharedVm: SharedViewModel
 ) {
     val query by weatherVm.query.collectAsState()
     val suggestions by weatherVm.suggestions.collectAsState()

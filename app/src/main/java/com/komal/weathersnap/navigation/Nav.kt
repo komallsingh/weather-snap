@@ -20,7 +20,7 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavHost(navController: NavHostController = rememberNavController()) {
+fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
     // ONE SharedViewModel instance for the whole app — scoped to NavHost
     val sharedVm: SharedViewModel = hiltViewModel()

@@ -34,7 +34,7 @@ import com.komal.weathersnap.model.*
 fun CameraScreen(
     navController: NavController,
     cameraVm: CameraViewModel = hiltViewModel(),
-    sharedVm: SharedViewModel = hiltViewModel()
+    sharedVm: SharedViewModel
 ) {
     val cameraState by cameraVm.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current

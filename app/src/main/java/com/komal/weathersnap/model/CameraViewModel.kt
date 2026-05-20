@@ -1,6 +1,5 @@
 package com.komal.weathersnap.model
 
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -44,11 +43,14 @@ class CameraViewModel @Inject constructor(
     val state: StateFlow<CameraState> = _state.asStateFlow()
 
     private var imageCapture: ImageCapture? = null
+    private var isBound = false                          // ← guard flag
 
     fun bindCamera(
         lifecycleOwner: LifecycleOwner,
         surfaceProvider: Preview.SurfaceProvider
     ) {
+        if (isBound) return                              // ← skip if already bound
+
         val providerFuture = ProcessCameraProvider.getInstance(context)
         providerFuture.addListener({
             val cameraProvider = providerFuture.get()
@@ -67,21 +69,26 @@ class CameraViewModel @Inject constructor(
                     preview,
                     imageCapture
                 )
-            }.onFailure { _state.value = CameraState.Error(it.message ?: "Camera bind failed") }
+                isBound = true                           // ← mark as bound only on success
+            }.onFailure {
+                _state.value = CameraState.Error(it.message ?: "Camera bind failed")
+            }
         }, ContextCompat.getMainExecutor(context))
     }
 
     fun capturePhoto() {
-        val ic = imageCapture ?: return
+        val ic = imageCapture ?: run {
+            _state.value = CameraState.Error("Camera not ready — try again")
+            return
+        }
         _state.value = CameraState.Capturing
 
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val rawFile = File(context.cacheDir, "SNAP_${timestamp}_raw.jpg")
-
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(rawFile).build()
+        val timestamp  = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val rawFile    = File(context.cacheDir, "SNAP_${timestamp}_raw.jpg")
+        val outputOpts = ImageCapture.OutputFileOptions.Builder(rawFile).build()
 
         ic.takePicture(
-            outputOptions,
+            outputOpts,
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -100,15 +107,14 @@ class CameraViewModel @Inject constructor(
 
     private fun compress(rawFile: File): CaptureResult {
         val originalSize = rawFile.length()
-        val bitmap = BitmapFactory.decodeFile(rawFile.absolutePath)
+        val bitmap       = BitmapFactory.decodeFile(rawFile.absolutePath)
 
-        // Scale down to max 1080px on longest side
         val maxDim = 1080
         val scaled = if (bitmap.width > maxDim || bitmap.height > maxDim) {
             val scale = maxDim.toFloat() / maxOf(bitmap.width, bitmap.height)
             Bitmap.createScaledBitmap(
                 bitmap,
-                (bitmap.width * scale).toInt(),
+                (bitmap.width  * scale).toInt(),
                 (bitmap.height * scale).toInt(),
                 true
             )
@@ -121,8 +127,7 @@ class CameraViewModel @Inject constructor(
         FileOutputStream(compressedFile).use { out ->
             scaled.compress(Bitmap.CompressFormat.JPEG, 80, out)
         }
-
-        rawFile.delete() // clean up temp raw file
+        rawFile.delete()                                 // clean up raw temp file
 
         return CaptureResult(
             path           = compressedFile.absolutePath,
@@ -131,5 +136,12 @@ class CameraViewModel @Inject constructor(
         )
     }
 
-    fun resetState() { _state.value = CameraState.Idle }
+    fun resetState() {
+        _state.value = CameraState.Idle
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        isBound = false
+    }
 }
