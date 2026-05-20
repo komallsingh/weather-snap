@@ -105,12 +105,14 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.hilt.navigation.compose)
+    // Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
-
-
+// Accompanist permissions (for camera)
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
     // Testing
     testImplementation(libs.junit)
-
+    implementation("androidx.compose.material:material-icons-extended")
     androidTestImplementation(libs.androidx.junit)
 
     androidTestImplementation(libs.androidx.espresso.core)

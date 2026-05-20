@@ -22,7 +22,7 @@ class WeatherRepository @Inject constructor(
             val result = geoApi.searchCities(query).results
                 ?.map {
                     City(
-                        id = it.id,
+                        id = it.id.toInt(),
                         name = it.name,
                         latitude = it.latitude,
                         longitude = it.longitude,
