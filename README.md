@@ -23,7 +23,6 @@ A production-grade Android weather app built with Jetpack Compose, CameraX, and 
 - 🗃️ **Room persistence** — all reports saved locally with full weather snapshot, image path, sizes, and timestamp
 - 🔄 **Draft recovery** — in-progress report survives rotation and process death (see Developer Challenge section)
 - 🌙 **Dark theme** — full Material 3 dark UI throughout
-- ✅ **EXIF-aware image rotation** — portrait photos display correctly after capture
 
 ---
 
@@ -42,7 +41,6 @@ A production-grade Android weather app built with Jetpack Compose, CameraX, and 
 | Camera | CameraX (camera-camera2, camera-lifecycle, camera-view) |
 | Image loading | Coil |
 | Permissions | Accompanist Permissions |
-| EXIF | AndroidX ExifInterface |
 
 ---
 
@@ -81,7 +79,7 @@ com.komal.weathersnap
 │   ├── WeatherViewModel.kt     # City search + weather fetch, debounce, cache
 │   ├── SharedViewModel.kt      # Draft state — SavedStateHandle persistence
 │   ├── ReportViewModel.kt      # Save report to Room, expose reports Flow
-│   └── CameraViewModel.kt      # CameraX bind, capture, compress, EXIF rotation
+│   └── CameraViewModel.kt      # CameraX bind, capture, compress
 ├── navigation/
 │   └── Nav.kt                  # NavHost — SharedViewModel scoped to graph
 ├── Screens/
@@ -214,8 +212,6 @@ class SharedViewModel(
 **Single `SharedViewModel` instance scoped to the NavGraph** — `SharedViewModel` is created once in `AppNavHost` and passed explicitly to all screens. This guarantees the camera screen and report screen share the same draft state across the entire navigation back stack.
 
 **Two Retrofit instances** — The geocoding API (`geocoding-api.open-meteo.com`) and forecast API (`api.open-meteo.com`) have different base URLs and are provided as separate `@Named` Retrofit instances, both using the same `OkHttpClient`.
-
-**EXIF-aware compression** — CameraX writes raw JPEG files that embed orientation in EXIF metadata. `BitmapFactory.decodeFile` ignores EXIF, so photos taken in portrait were displaying rotated. The `compress()` function reads the EXIF orientation tag first and applies a `Matrix` rotation before saving the compressed output.
 
 **Camera bind guard** — `AndroidView`'s `update` lambda fires on every recomposition. A boolean `isBound` flag in `CameraViewModel` prevents redundant `bindToLifecycle` calls that would otherwise throw `IllegalArgumentException`.
 
