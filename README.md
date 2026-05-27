@@ -6,7 +6,6 @@
 ![Material 3](https://img.shields.io/badge/Material%203-6750A4?style=for-the-badge&logo=materialdesign&logoColor=white)
 ![MVVM](https://img.shields.io/badge/Architecture-MVVM-orange?style=for-the-badge)
 ![Coroutines](https://img.shields.io/badge/Coroutines-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
-![Navigation Compose](https://img.shields.io/badge/Navigation-Compose-4285F4?style=for-the-badge)
 ![Retrofit](https://img.shields.io/badge/Retrofit-2.11.0-48B983?style=for-the-badge)
 ![OkHttp](https://img.shields.io/badge/OkHttp-Logging%20Interceptor-black?style=for-the-badge)
 ![Room](https://img.shields.io/badge/Room-2.6.1-3DDC84?style=for-the-badge)
