@@ -34,7 +34,7 @@ A production-grade Android weather app built with Jetpack Compose, CameraX, and 
 - 🗜️ **Image compression** — original vs compressed size displayed on both report creation and saved reports screens
 - 📝 **Notes** — free-text notes attached to each report
 - 🗃️ **Room persistence** — all reports saved locally with full weather snapshot, image path, sizes, and timestamp
-- 🔄 **Draft recovery** — in-progress report survives rotation and process death (see Developer Challenge section)
+- 🔄 **Draft recovery** — in-progress report survives rotation and process death
 - 🌙 **Dark theme** — full Material 3 dark UI throughout
 
 ---
